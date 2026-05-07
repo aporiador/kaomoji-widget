@@ -1,0 +1,22 @@
+# App custom command permissions
+"$schema" = "./schemas/schema.json"
+
+[[permission]]
+identifier = "allow-get-settings"
+description = "Enables the get_settings command."
+commands.allow = ["get_settings"]
+
+[[permission]]
+identifier = "deny-get-settings"
+description = "Denies the get_settings command."
+commands.deny = ["get_settings"]
+
+[[permission]]
+identifier = "allow-set-settings"
+description = "Enables the set_settings command."
+commands.allow = ["set_settings"]
+
+[[permission]]
+identifier = "deny-set-settings"
+description = "Denies the set_settings command."
+commands.deny = ["set_settings"]

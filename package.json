@@ -1,0 +1,10 @@
+{
+  "name": "kaomoji",
+  "private": true,
+  "scripts": {
+    "dev": "cd crates/widget && bun run tauri dev",
+    "build": "cargo build --release -p mcp-bridge && cd crates/widget && bun run tauri build",
+    "send": "cargo run --example send -p ipc-protocol --",
+    "send-image": "cargo run --example send -p ipc-protocol -- --image"
+  }
+}

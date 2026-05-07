@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "crates/widget/src-tauri",
+    "crates/mcp-bridge",
+    "crates/ipc-protocol",
+]
+resolver = "2"

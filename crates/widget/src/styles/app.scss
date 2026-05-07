@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+    background: transparent;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    height: 80px;
+}
+
+.widget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    cursor: grab;
+    height: 80px;
+}
+
+.kaomoji {
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+        sans-serif;
+    font-size: 5rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #d97757;
+    pointer-events: none;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    top: -4px;
+    position: relative;
+    width: 100%;
+}
+
+.display-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    pointer-events: none;
+}
