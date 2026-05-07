@@ -74,8 +74,6 @@ To use your own image assets with the `set_asset` / `list_assets` tools, set `KA
 }
 ```
 
-The `assets/kaomoji-pack/` folder in this repo contains a small example pack you can use or replace.
-
 **Restart Claude Desktop** after adding the config. You should see the kaomoji tools available in Claude's tool list.
 
 ### Project instructions
