@@ -4,6 +4,8 @@ A little widget floats on your desktop. Claude picks the face based on what's ha
 
 Idea comes from [here](https://eriskii.net/projects/claude-faces)
 
+https://github.com/user-attachments/assets/7dc4fe3e-50a5-4796-ba21-b6a526dca7fd
+
 ## Features
 
 - **Transparent window** - floats on your desktop above other windows
