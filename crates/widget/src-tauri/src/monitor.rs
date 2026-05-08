@@ -57,7 +57,7 @@ pub fn get_notch_inset(name: String, cache: State<'_, MonitorCache>) -> Option<f
 }
 
 #[cfg(not(target_os = "macos"))]
-fn collect_monitors(app: tauri::AppHandle) -> Result<MonitorCache, String> {
+pub fn collect_monitors(app: tauri::AppHandle) -> Result<MonitorCache, String> {
     let monitors = app.available_monitors().map_err(|e| e.to_string())?;
     let primary = app.primary_monitor().map_err(|e| e.to_string())?;
     let primary_name = primary.as_ref().and_then(|m| m.name());

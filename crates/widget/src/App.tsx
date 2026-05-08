@@ -107,7 +107,6 @@ function App() {
 
   createEffect(() => {
     const d = display();
-    alert();
     if (d.kind === "kaomoji" && d.text) {
       fitText(d.text);
     }

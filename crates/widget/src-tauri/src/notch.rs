@@ -1,5 +1,3 @@
-use objc2::msg_send;
-use objc2::runtime::AnyObject;
 use tauri::{LogicalPosition, LogicalSize, WebviewWindow};
 
 use crate::monitor::MonitorCache;
@@ -48,6 +46,8 @@ pub fn enable_notch_mode(
 
     #[cfg(target_os = "macos")]
     {
+        use objc2::msg_send;
+        use objc2::runtime::AnyObject;
         let ns_window = window.ns_window()? as *mut AnyObject;
         unsafe {
             // NSStatusWindowLevel = 25 — must be raised *before* positioning
@@ -86,6 +86,8 @@ pub fn disable_notch_mode(window: &WebviewWindow) -> Result<(), Box<dyn std::err
 
     #[cfg(target_os = "macos")]
     {
+        use objc2::msg_send;
+        use objc2::runtime::AnyObject;
         let ns_window = window.ns_window()? as *mut AnyObject;
         unsafe {
             // Reset to normal window level (NSNormalWindowLevel = 0)
