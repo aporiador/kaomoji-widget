@@ -8,6 +8,8 @@
     "store:default",
     "core:window:allow-close",
     "allow-get-settings",
-    "allow-set-settings"
+    "allow-set-settings",
+    "allow-get-monitors",
+    "allow-get-notch-inset"
   ]
 }

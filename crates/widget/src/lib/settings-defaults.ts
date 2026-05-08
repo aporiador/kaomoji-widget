@@ -13,4 +13,6 @@ export const DEFAULT_SETTINGS: Settings = {
   text_shadow_opacity: 0.5,
   background_color: "#000000",
   background_opacity: 0.05,
+  notch_mode: false,
+  notch_monitor: undefined,
 };

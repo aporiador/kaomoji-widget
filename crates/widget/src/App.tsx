@@ -34,11 +34,17 @@ function App() {
     ...DEFAULT_SETTINGS,
   });
 
+  const [notchInset, setNotchInset] = createSignal<number>(0);
+  const [notchEntered, setNotchEntered] = createSignal(false);
+
   let kaomojiRef: HTMLSpanElement | undefined;
 
   const fitText = (text: string) => {
     if (!kaomojiRef) return;
-    const container = kaomojiRef.parentElement!;
+    // const container = settings().notch_mode
+    //   ? kaomojiRef
+    //   : kaomojiRef!.parentElement;
+    const container = kaomojiRef;
     const maxW = container.clientWidth;
     const maxH = container.clientHeight;
 
@@ -101,9 +107,29 @@ function App() {
 
   createEffect(() => {
     const d = display();
+    alert();
     if (d.kind === "kaomoji" && d.text) {
       fitText(d.text);
     }
+  });
+
+  createEffect(() => {
+    const s = settings();
+
+    if (!s.notch_monitor) return;
+
+    invoke<number>("get_notch_inset", { name: s.notch_monitor })
+      .then((v) => {
+        setNotchInset(v);
+        if (settings().notch_mode) {
+          setNotchEntered(true);
+        } else {
+          setNotchEntered(false);
+        }
+      })
+      .catch((e) => {
+        console.error("get_notch_inset eerror:", e);
+      });
   });
 
   onMount(() => {
@@ -112,7 +138,9 @@ function App() {
 
     // Load initial settings
     invoke<Settings>("get_settings")
-      .then((s) => setSettings({ ...DEFAULT_SETTINGS, ...s }))
+      .then((s) => {
+        setSettings({ ...DEFAULT_SETTINGS, ...s });
+      })
       .catch((e) => console.error("Failed to load settings:", e));
 
     onDisplayUpdate((payload) => {
@@ -147,13 +175,18 @@ function App() {
 
   return (
     <div
-      class="widget"
-      data-tauri-drag-region
+      class={`widget${settings().notch_mode ? " notch-mode" : ""}${notchEntered() ? " notch-entered" : ""}`}
+      {...(settings().notch_mode ? {} : { "data-tauri-drag-region": true })}
       style={{
-        "background-color": hexToRgba(
-          settings().background_color,
-          settings().background_opacity,
-        ),
+        "background-color": settings().notch_mode
+          ? "#000000"
+          : hexToRgba(
+              settings().background_color,
+              settings().background_opacity,
+            ),
+        "padding-top": settings().notch_mode ? `${notchInset()}px` : "0px",
+        height: settings().notch_mode ? `${notchInset() + 52}px` : "80px",
+        cursor: settings().notch_mode ? "default" : "grab",
       }}
     >
       <Switch fallback={null}>

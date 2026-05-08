@@ -9,4 +9,6 @@ export interface Settings {
   text_shadow_opacity: number;
   background_color: string;
   background_opacity: number;
+  notch_mode?: boolean;
+  notch_monitor?: string;
 }

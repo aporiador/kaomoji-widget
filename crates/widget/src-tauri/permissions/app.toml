@@ -20,3 +20,23 @@ commands.allow = ["set_settings"]
 identifier = "deny-set-settings"
 description = "Denies the set_settings command."
 commands.deny = ["set_settings"]
+
+[[permission]]
+identifier = "allow-get-monitors"
+description = "Enables the get_monitors command."
+commands.allow = ["get_monitors"]
+
+[[permission]]
+identifier = "deny-get-monitors"
+description = "Denies the get_monitors command."
+commands.deny = ["get_monitors"]
+
+[[permission]]
+identifier = "allow-get-notch-inset"
+description = "Enables the get_notch_inset command."
+commands.allow = ["get_notch_inset"]
+
+[[permission]]
+identifier = "deny-get-notch-inset"
+description = "Denies the get_notch_inset command."
+commands.deny = ["get_notch_inset"]

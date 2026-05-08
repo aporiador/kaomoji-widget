@@ -12,6 +12,8 @@
     "core:window:allow-hide",
     "core:window:allow-set-position",
     "allow-get-settings",
-    "allow-set-settings"
+    "allow-set-settings",
+    "allow-get-monitors",
+    "allow-get-notch-inset"
   ]
 }

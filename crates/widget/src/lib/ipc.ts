@@ -7,7 +7,7 @@ export type DisplayPayload =
   | { kind: "empty" };
 
 export function onDisplayUpdate(
-  callback: (payload: DisplayPayload) => void
+  callback: (payload: DisplayPayload) => void,
 ): Promise<() => void> {
   return listen<DisplayPayload>("display-update", (event) => {
     callback(event.payload);
@@ -15,7 +15,7 @@ export function onDisplayUpdate(
 }
 
 export function onSettingsUpdate(
-  callback: (payload: Settings) => void
+  callback: (payload: Settings) => void,
 ): Promise<() => void> {
   return listen<Settings>("settings-update", (event) => {
     callback(event.payload);

@@ -5,9 +5,15 @@ import { Switch } from "@kobalte/core/switch";
 import { Select } from "@kobalte/core/select";
 import { Settings } from "../lib/settings";
 import { DEFAULT_SETTINGS } from "../lib/settings-defaults";
+import NotchSettings from "./components/NotchSettings";
+import { Separator } from "@kobalte/core/separator";
 
 const FONT_OPTIONS = [
-  { value: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', label: "System Sans" },
+  {
+    value:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    label: "System Sans",
+  },
   { value: '"Courier New", Courier, monospace', label: "Monospace" },
   { value: '"Times New Roman", Times, serif', label: "Serif" },
   { value: '"Comic Sans MS", "Comic Sans", cursive', label: "Comic Sans" },
@@ -15,17 +21,12 @@ const FONT_OPTIONS = [
   { value: '"Verdana", sans-serif', label: "Verdana" },
 ];
 
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 function getEffectiveTheme(theme: string): "dark" | "light" {
   if (theme === "dark") return "dark";
   if (theme === "light") return "light";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 const ThemeIcon = (props: { theme: string }) => {
@@ -36,12 +37,30 @@ const ThemeIcon = (props: { theme: string }) => {
         <Show
           when={props.theme === "light"}
           fallback={
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
           }
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -55,7 +74,16 @@ const ThemeIcon = (props: { theme: string }) => {
         </Show>
       }
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
         <line x1="8" y1="21" x2="16" y2="21"></line>
         <line x1="12" y1="17" x2="12" y2="21"></line>
@@ -71,7 +99,9 @@ const THEME_LABELS: Record<string, string> = {
 };
 
 function SettingsApp() {
-  const [settings, setSettings] = createSignal<Settings>({ ...DEFAULT_SETTINGS });
+  const [settings, setSettings] = createSignal<Settings>({
+    ...DEFAULT_SETTINGS,
+  });
   const [isReady, setIsReady] = createSignal(false);
 
   onMount(async () => {
@@ -100,7 +130,10 @@ function SettingsApp() {
     return () => mql.removeEventListener("change", handler);
   });
 
-  const updateSetting = async <K extends keyof Settings>(key: K, value: Settings[K]) => {
+  const updateSetting = async <K extends keyof Settings>(
+    key: K,
+    value: Settings[K],
+  ) => {
     const next = { ...settings(), [key]: value };
     setSettings(next);
     try {
@@ -131,30 +164,46 @@ function SettingsApp() {
         </button>
       </div>
 
-      <Show when={isReady()} fallback={<div class="text-gray-500 dark:text-gray-400">Loading...</div>}>
-        <div class="space-y-6">
+      <Show
+        when={isReady()}
+        fallback={
+          <div class="text-gray-500 dark:text-gray-400">Loading...</div>
+        }
+      >
+        <div class="space-y-4">
           {/* Font Color */}
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Font Color</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Font Color
+            </label>
             <div class="flex items-center gap-3">
               <input
                 type="color"
                 value={settings().font_color}
-                onInput={(e) => updateSetting("font_color", e.currentTarget.value)}
+                onInput={(e) =>
+                  updateSetting("font_color", e.currentTarget.value)
+                }
                 class="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer overflow-hidden p-0"
               />
-              <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">{settings().font_color}</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                {settings().font_color}
+              </span>
             </div>
           </div>
 
           {/* Font Family */}
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Font Family</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Font Family
+            </label>
             <Select
               options={FONT_OPTIONS}
               optionValue="value"
               optionTextValue="label"
-              value={FONT_OPTIONS.find((f) => f.value === settings().font_family) ?? FONT_OPTIONS[0]}
+              value={
+                FONT_OPTIONS.find((f) => f.value === settings().font_family) ??
+                FONT_OPTIONS[0]
+              }
               onChange={(opt) => {
                 if (opt) updateSetting("font_family", opt.value);
               }}
@@ -163,15 +212,19 @@ function SettingsApp() {
                   item={props.item}
                   class="px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md data-[highlighted]:bg-gray-100 dark:data-[highlighted]:bg-gray-700"
                 >
-                  <Select.ItemLabel>{props.item.rawValue.label}</Select.ItemLabel>
+                  <Select.ItemLabel>
+                    {props.item.rawValue.label}
+                  </Select.ItemLabel>
                 </Select.Item>
               )}
             >
-              <Select.Trigger
-                class="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-gray-100"
-              >
-                <Select.Value<typeof FONT_OPTIONS[0]>>{(state) => state.selectedOption()?.label}</Select.Value>
-                <Select.Icon class="text-gray-500 dark:text-gray-400">▼</Select.Icon>
+              <Select.Trigger class="flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:text-gray-100">
+                <Select.Value<(typeof FONT_OPTIONS)[0]>>
+                  {(state) => state.selectedOption()?.label}
+                </Select.Value>
+                <Select.Icon class="text-gray-500 dark:text-gray-400">
+                  ▼
+                </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
                 <Select.Content class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-1 z-50">
@@ -184,8 +237,12 @@ function SettingsApp() {
           {/* Font Size */}
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Font Size</label>
-              <span class="text-sm text-gray-600 dark:text-gray-400">{settings().font_size}px</span>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Font Size
+              </label>
+              <span class="text-sm text-gray-600 dark:text-gray-400">
+                {settings().font_size}px
+              </span>
             </div>
             <Slider
               value={[settings().font_size]}
@@ -205,8 +262,12 @@ function SettingsApp() {
           {/* Opacity */}
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Opacity</label>
-              <span class="text-sm text-gray-600 dark:text-gray-400">{Math.round(settings().opacity * 100)}%</span>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Opacity
+              </label>
+              <span class="text-sm text-gray-600 dark:text-gray-400">
+                {Math.round(settings().opacity * 100)}%
+              </span>
             </div>
             <Slider
               value={[settings().opacity]}
@@ -225,7 +286,9 @@ function SettingsApp() {
 
           {/* Text Shadow */}
           <div class="flex items-center justify-between">
-            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Text Shadow</label>
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Text Shadow
+            </label>
             <Switch
               checked={settings().text_shadow}
               onChange={(checked) => updateSetting("text_shadow", checked)}
@@ -241,22 +304,30 @@ function SettingsApp() {
           {/* Text Shadow Color */}
           <Show when={settings().text_shadow}>
             <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Text Shadow Color</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Text Shadow Color
+              </label>
               <div class="flex items-center gap-3">
                 <input
                   type="color"
                   value={settings().text_shadow_color}
-                  onInput={(e) => updateSetting("text_shadow_color", e.currentTarget.value)}
+                  onInput={(e) =>
+                    updateSetting("text_shadow_color", e.currentTarget.value)
+                  }
                   class="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer overflow-hidden p-0"
                 />
-                <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">{settings().text_shadow_color}</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                  {settings().text_shadow_color}
+                </span>
               </div>
             </div>
 
             {/* Text Shadow Opacity */}
             <div class="space-y-3">
               <div class="flex justify-between items-center">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Text Shadow Opacity</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Text Shadow Opacity
+                </label>
                 <input
                   type="number"
                   min={0}
@@ -265,14 +336,20 @@ function SettingsApp() {
                   value={settings().text_shadow_opacity}
                   onInput={(e) => {
                     const val = parseFloat(e.currentTarget.value);
-                    if (!isNaN(val)) updateSetting("text_shadow_opacity", Math.min(1, Math.max(0, val)));
+                    if (!isNaN(val))
+                      updateSetting(
+                        "text_shadow_opacity",
+                        Math.min(1, Math.max(0, val)),
+                      );
                   }}
                   class="w-16 text-sm text-right text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
                 />
               </div>
               <Slider
                 value={[settings().text_shadow_opacity]}
-                onChange={(vals) => updateSetting("text_shadow_opacity", vals[0])}
+                onChange={(vals) =>
+                  updateSetting("text_shadow_opacity", vals[0])
+                }
                 minValue={0}
                 maxValue={1}
                 step={0.01}
@@ -288,22 +365,30 @@ function SettingsApp() {
 
           {/* Background Color */}
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Background Color</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Background Color
+            </label>
             <div class="flex items-center gap-3">
               <input
                 type="color"
                 value={settings().background_color}
-                onInput={(e) => updateSetting("background_color", e.currentTarget.value)}
+                onInput={(e) =>
+                  updateSetting("background_color", e.currentTarget.value)
+                }
                 class="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer overflow-hidden p-0"
               />
-              <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">{settings().background_color}</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                {settings().background_color}
+              </span>
             </div>
           </div>
 
           {/* Background Opacity */}
           <div class="space-y-3">
             <div class="flex justify-between items-center">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Background Opacity</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Background Opacity
+              </label>
               <input
                 type="number"
                 min={0}
@@ -312,7 +397,11 @@ function SettingsApp() {
                 value={settings().background_opacity}
                 onInput={(e) => {
                   const val = parseFloat(e.currentTarget.value);
-                  if (!isNaN(val)) updateSetting("background_opacity", Math.min(1, Math.max(0, val)));
+                  if (!isNaN(val))
+                    updateSetting(
+                      "background_opacity",
+                      Math.min(1, Math.max(0, val)),
+                    );
                 }}
                 class="w-16 text-sm text-right text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
               />
@@ -332,25 +421,9 @@ function SettingsApp() {
             </Slider>
           </div>
 
-          {/* Preview */}
-          <div class="mt-6 p-4 rounded-lg border border-gray-200 dark:border-gray-700" style={{ "background-color": hexToRgba(settings().background_color, settings().background_opacity) }}>
-            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Preview</p>
-            <div class="flex items-center justify-center h-20">
-              <span
-                style={{
-                  color: settings().font_color,
-                  "font-family": settings().font_family,
-                  "font-size": `${settings().font_size}px`,
-                  opacity: settings().opacity,
-                  "text-shadow": settings().text_shadow
-                    ? `0 2px 4px ${hexToRgba(settings().text_shadow_color, settings().text_shadow_opacity)}`
-                    : "none",
-                }}
-              >
-                (´• ω •`)
-              </span>
-            </div>
-          </div>
+          {/* Notch Mode */}
+          <Separator />
+          <NotchSettings settings={settings()} onUpdate={updateSetting} />
         </div>
       </Show>
     </div>

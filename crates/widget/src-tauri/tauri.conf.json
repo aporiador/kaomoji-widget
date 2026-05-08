@@ -16,7 +16,7 @@
         "label": "main",
         "title": "kaomoji-widget",
         "width": 200,
-        "height": 100,
+        "height": 80,
         "x": 100,
         "y": 100,
         "center": false,

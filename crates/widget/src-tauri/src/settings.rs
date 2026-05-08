@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter};
+use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_store::StoreExt;
+
+use crate::monitor::MonitorCache;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Settings {
@@ -24,6 +26,10 @@ pub struct Settings {
     pub background_color: String,
     #[serde(default = "default_background_opacity")]
     pub background_opacity: f64,
+    #[serde(default = "default_notch_mode")]
+    pub notch_mode: bool,
+    #[serde(default)]
+    pub notch_monitor: Option<String>,
 }
 
 fn default_theme() -> String {
@@ -57,6 +63,9 @@ fn default_background_color() -> String {
 fn default_background_opacity() -> f64 {
     0.05
 }
+fn default_notch_mode() -> bool {
+    false
+}
 
 impl Default for Settings {
     fn default() -> Self {
@@ -71,6 +80,8 @@ impl Default for Settings {
             text_shadow_opacity: default_text_shadow_opacity(),
             background_color: default_background_color(),
             background_opacity: default_background_opacity(),
+            notch_mode: default_notch_mode(),
+            notch_monitor: None,
         }
     }
 }
@@ -89,13 +100,30 @@ pub fn get_settings(app: AppHandle) -> Result<Settings, String> {
 }
 
 #[tauri::command]
-pub fn set_settings(app: AppHandle, settings: Settings) -> Result<(), String> {
+pub fn set_settings(
+    app: AppHandle,
+    settings: Settings,
+    monitor_cache: State<'_, MonitorCache>,
+) -> Result<(), String> {
     let store = app.store("settings.bin").map_err(|e| e.to_string())?;
     store.set(SETTINGS_KEY, serde_json::to_value(&settings).unwrap());
     let _ = store.save();
 
     // Emit to main window so it updates live
     let _ = app.emit("settings-update", &settings);
+
+    // Apply or remove notch-mode window configuration
+    if let Some(window) = app.get_webview_window("main") {
+        if settings.notch_mode {
+            let _ = crate::notch::enable_notch_mode(
+                &window,
+                settings.notch_monitor.as_deref(),
+                &monitor_cache,
+            );
+        } else {
+            let _ = crate::notch::disable_notch_mode(&window);
+        }
+    }
 
     Ok(())
 }
